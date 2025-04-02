@@ -1,0 +1,39 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentPesquisa">
+
+    <fragment
+        android:id="@+id/fragmentPesquisa"
+        android:name="com.mercadolivre.desafio.ui.pesquisa.PesquisaFragment"
+        android:label="Pesquisa"
+        tools:layout="@layout/fragment_pesquisa">
+        <action
+            android:id="@+id/action_pesquisaFragment_to_resultadosFragment"
+            app:destination="@id/fragmentResultados" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentResultados"
+        android:name="com.example.mercadolivredesafio.ResultadosFragment"
+        android:label="Resultados"
+        tools:layout="@layout/fragment_resultados">
+        <argument
+            android:name="query"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_resultadosFragment_to_detalhesProdutoFragment"
+            app:destination="@id/fragmentDetalhesProduto" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentDetalhesProduto"
+        android:name="com.example.mercadolivredesafio.DetalhesProdutoFragment"
+        android:label="Detalhes do Produto"
+        tools:layout="@layout/fragment_detalhes_produto">
+        <argument
+            android:name="produtoId"
+            app:argType="string" />
+    </fragment>
+</navigation>

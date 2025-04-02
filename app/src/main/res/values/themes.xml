@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MercadoLivreCase" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge" />
+    <item name="colorPrimaryVariant" type="color">@color/yellow_500</item>
+
+</resources>

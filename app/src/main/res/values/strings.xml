@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Mercado Livre Case</string>
+    <string name="txt_pesquisa">Buscar no Mercado Livre</string>
+    <string name="txt_localizacao">Enviar para Gustavo Torres - Rua X 99</string>
+    <string name="txt_titulo_ultimo_visto">Inspirado no último visto</string>
+    <string name="txt_ver_mais">Ver mais</string>
+    <string name="txt_compre_mais">Compre ainda mais...</string>
+</resources>

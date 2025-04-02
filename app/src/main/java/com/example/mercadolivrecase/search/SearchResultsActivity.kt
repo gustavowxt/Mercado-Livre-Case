@@ -1,8 +1,10 @@
-package com.example.mercadolivrecase
+package com.example.mercadolivrecase.search
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mercadolivrecase.Produto
+import com.example.mercadolivrecase.ProdutoAdapter
 import com.example.mercadolivrecase.databinding.ActivitySearchResultsBinding
 
 class SearchResultsActivity : AppCompatActivity() {

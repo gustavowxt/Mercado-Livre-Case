@@ -1,7 +1,8 @@
-package com.example.mercadolivrecase
+package com.example.mercadolivrecase.details
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.mercadolivrecase.Produto
 import com.example.mercadolivrecase.databinding.ActivityProductDetailBinding
 
 class ProductDetailActivity : AppCompatActivity() {

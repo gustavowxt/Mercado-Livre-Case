@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mercadolivrecase.databinding.ProdutoItemBinding
+import com.example.mercadolivrecase.details.ProductDetailActivity
 
 
 class ProdutoAdapter(private val context: Context, val listaProdutos: MutableList<Produto>) :

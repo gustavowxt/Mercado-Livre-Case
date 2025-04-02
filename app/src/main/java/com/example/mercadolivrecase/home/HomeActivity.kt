@@ -1,16 +1,21 @@
-package com.example.mercadolivrecase
+package com.example.mercadolivrecase.home
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mercadolivrecase.Anuncio
+import com.example.mercadolivrecase.AnuncioAdapter
+import com.example.mercadolivrecase.Produto
+import com.example.mercadolivrecase.ProdutoAdapter
+import com.example.mercadolivrecase.R
+import com.example.mercadolivrecase.search.SearchResultsActivity
 import com.example.mercadolivrecase.databinding.ActivityHomeBinding
 
 
-class Home : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var anuncioAdapter: AnuncioAdapter
@@ -33,17 +38,17 @@ class Home : AppCompatActivity() {
     private fun setupRecyclerViews() {
         // RecyclerView para anúncios
         binding.recyclerViewAnuncios.apply {
-            layoutManager = LinearLayoutManager(this@Home, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
-            anuncioAdapter = AnuncioAdapter(this@Home, listaAnuncios)
+            anuncioAdapter = AnuncioAdapter(this@HomeActivity, listaAnuncios)
             adapter = anuncioAdapter
         }
 
         // RecyclerView para produtos
         binding.recyclerViewProdutos.apply {
-            layoutManager = GridLayoutManager(this@Home, 2)
+            layoutManager = GridLayoutManager(this@HomeActivity, 2)
             setHasFixedSize(true)
-            produtoAdapter = ProdutoAdapter(this@Home, listaProdutosFiltrados)
+            produtoAdapter = ProdutoAdapter(this@HomeActivity, listaProdutosFiltrados)
             adapter = produtoAdapter
         }
     }
@@ -52,7 +57,7 @@ class Home : AppCompatActivity() {
         binding.pesquisa.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
-                    val intent = Intent(this@Home, SearchResultsActivity::class.java)
+                    val intent = Intent(this@HomeActivity, SearchResultsActivity::class.java)
                     intent.putExtra("query", it)
                     intent.putParcelableArrayListExtra("produtos", ArrayList(listaProdutos))
                     startActivity(intent)

@@ -33,6 +33,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".SearchResultsActivity"/>
+        <activity android:name=".ProductDetailActivity"/>
+
+
     </application>
 
 </manifest>

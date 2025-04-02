@@ -3,40 +3,45 @@ package com.example.mercadolivrecase
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.mercadolivrecase.databinding.ProdutoItemBinding
 
 
-class ProdutoAdapter(private val context: Context, val listaProdutos: MutableList<Produto>) :
-    RecyclerView.Adapter<ProdutoAdapter.ProdutoViewHolder>() {
+class ProdutoAdapter(private val context: Context, private val produtos: List<Produto>) : RecyclerView.Adapter<ProdutoAdapter.ProdutoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProdutoViewHolder {
-        val itemLista = ProdutoItemBinding.inflate(LayoutInflater.from(context), parent, false)
-        return ProdutoViewHolder(itemLista)
+        val view = LayoutInflater.from(context).inflate(R.layout.produto_item, parent, false)
+        return ProdutoViewHolder(view)
     }
-
-    override fun getItemCount() = listaProdutos.size
 
     override fun onBindViewHolder(holder: ProdutoViewHolder, position: Int) {
-        val produto = listaProdutos[position]
-        holder.imgProduto.setImageResource(produto.imagem!!)
-        holder.precoProduto.text = produto.preco
-        holder.descricaoProduto.text = produto.descricao
-        holder.frete.text = produto.frete
+        val produto = produtos[position]
 
-        holder.itemView.setOnClickListener {
-            // Ao clicar no item, abre a tela de detalhes do produto
-            val intent = Intent(context, ProductDetailActivity::class.java)
-            intent.putExtra("produto", produto) // Envia o produto para a tela de detalhes
-            context.startActivity(intent)
-        }
+        // Carregar imagem da URL com Glide
+        Glide.with(context)
+            .load(produto.imagemUrl)
+            .placeholder(R.drawable.placeholder) // Imagem temporária enquanto carrega
+            .error(R.drawable.error_image) // Imagem de erro caso falhe
+            .into(holder.imagemProduto)
+
+        holder.titulo.text = produto.descricao
+        holder.preco.text = produto.preco
+        holder.condicao.text = produto.condicao
     }
 
-    inner class ProdutoViewHolder(binding: ProdutoItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        val imgProduto = binding.img
-        val precoProduto = binding.txtPreco
-        val descricaoProduto = binding.txtDescricao
-        val frete = binding.txtFrete
+    override fun getItemCount(): Int = produtos.size
+
+    class ProdutoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imagemProduto: ImageView = itemView.findViewById(R.id.imagemProduto)
+        val titulo: TextView = itemView.findViewById(R.id.tituloProduto)
+        val preco: TextView = itemView.findViewById(R.id.precoProduto)
+        val condicao: TextView = itemView.findViewById(R.id.condicaoProduto)
     }
 }
+
+

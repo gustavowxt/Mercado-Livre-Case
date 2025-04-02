@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -81,7 +82,9 @@ dependencies {
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.48")
-  //  kapt("com.google.dagger:hilt-android-compiler:2.48")
+    implementation(libs.volley)
+    implementation(libs.androidx.tools.core)
+    //  kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     // Testing
     testImplementation("junit:junit:4.13.2")

@@ -1,13 +1,15 @@
 package com.example.mercadolivrecase
 
-import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mercadolivrecase.databinding.ActivityHomeBinding
+
+
 
 
 class Home : AppCompatActivity() {
@@ -31,7 +33,6 @@ class Home : AppCompatActivity() {
     }
 
     private fun setupRecyclerViews() {
-        // RecyclerView para anúncios
         binding.recyclerViewAnuncios.apply {
             layoutManager = LinearLayoutManager(this@Home, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
@@ -39,7 +40,6 @@ class Home : AppCompatActivity() {
             adapter = anuncioAdapter
         }
 
-        // RecyclerView para produtos
         binding.recyclerViewProdutos.apply {
             layoutManager = GridLayoutManager(this@Home, 2)
             setHasFixedSize(true)
@@ -52,10 +52,12 @@ class Home : AppCompatActivity() {
         binding.pesquisa.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
-                    val intent = Intent(this@Home, SearchResultsActivity::class.java)
-                    intent.putExtra("query", it)
-                    intent.putParcelableArrayListExtra("produtos", ArrayList(listaProdutos))
-                    startActivity(intent)
+                    val produtosFiltrados = listaProdutos.filter { produto ->
+                        produto.descricao.contains(query, ignoreCase = true)
+                    }
+                    listaProdutosFiltrados.clear()
+                    listaProdutosFiltrados.addAll(produtosFiltrados)
+                    produtoAdapter.notifyDataSetChanged()
                 }
                 return false
             }
@@ -77,10 +79,10 @@ class Home : AppCompatActivity() {
 
     private fun carregarProdutos() {
         listaProdutos.apply {
-            add(Produto(R.drawable.produto1, "R$ 7.499,90", "ACER Notebook Nitro 5, AMD R7 4800H, 8GB, 512GB SDD", "Frete grátis"))
-            add(Produto(R.drawable.produto2, "R$ 4.388,01", "Nike Air Jordan 1 Chicago 1994 Sample", "Frete grátis"))
-            add(Produto(R.drawable.produto3, "R$ 2.499,90", "Microsoft Xbox One - 1TB Project Scorpio Edition", "Frete grátis"))
-            add(Produto(R.drawable.produto4, "R$ 1.899,90", "Smart TV LG 60' 4K UHD 60UQ8050 WiFi", "Frete grátis"))
+            add(Produto("https://exemplo.com/produto1.jpg", "R$ 7.499,90", "ACER Notebook Nitro 5, AMD R7 4800H, 8GB, 512GB SDD", "Novo"))
+            add(Produto("https://exemplo.com/produto2.jpg", "R$ 4.388,01", "Nike Air Jordan 1 Chicago 1994 Sample", "Usado"))
+            add(Produto("https://exemplo.com/produto3.jpg", "R$ 2.499,90", "Microsoft Xbox One - 1TB Project Scorpio Edition", "Usado"))
+            add(Produto("https://exemplo.com/produto4.jpg", "R$ 1.899,90", "Smart TV LG 60' 4K UHD 60UQ8050 WiFi", "Novo"))
         }
 
         listaProdutosFiltrados.addAll(listaProdutos)

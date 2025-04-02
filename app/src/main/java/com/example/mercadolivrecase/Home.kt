@@ -1,16 +1,18 @@
 package com.example.mercadolivrecase
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
-import androidx.appcompat.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.SearchView
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.mercadolivrecase.databinding.ActivityHomeBinding
-
-
-
+import org.json.JSONObject
 
 class Home : AppCompatActivity() {
 
@@ -18,17 +20,17 @@ class Home : AppCompatActivity() {
     private lateinit var anuncioAdapter: AnuncioAdapter
     private lateinit var produtoAdapter: ProdutoAdapter
     private val listaAnuncios: MutableList<Anuncio> = mutableListOf()
-    private val listaProdutos: MutableList<Produto> = mutableListOf()
     private val listaProdutosFiltrados: MutableList<Produto> = mutableListOf()
+    private lateinit var requestQueue: RequestQueue
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        requestQueue = Volley.newRequestQueue(this)
         setupRecyclerViews()
         carregarAnuncios()
-        carregarProdutos()
         setupSearchView()
     }
 
@@ -52,12 +54,7 @@ class Home : AppCompatActivity() {
         binding.pesquisa.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
-                    val produtosFiltrados = listaProdutos.filter { produto ->
-                        produto.descricao.contains(query, ignoreCase = true)
-                    }
-                    listaProdutosFiltrados.clear()
-                    listaProdutosFiltrados.addAll(produtosFiltrados)
-                    produtoAdapter.notifyDataSetChanged()
+                    buscarProdutos(it)
                 }
                 return false
             }
@@ -77,15 +74,26 @@ class Home : AppCompatActivity() {
         anuncioAdapter.notifyDataSetChanged()
     }
 
-    private fun carregarProdutos() {
-        listaProdutos.apply {
-            add(Produto("https://exemplo.com/produto1.jpg", "R$ 7.499,90", "ACER Notebook Nitro 5, AMD R7 4800H, 8GB, 512GB SDD", "Novo"))
-            add(Produto("https://exemplo.com/produto2.jpg", "R$ 4.388,01", "Nike Air Jordan 1 Chicago 1994 Sample", "Usado"))
-            add(Produto("https://exemplo.com/produto3.jpg", "R$ 2.499,90", "Microsoft Xbox One - 1TB Project Scorpio Edition", "Usado"))
-            add(Produto("https://exemplo.com/produto4.jpg", "R$ 1.899,90", "Smart TV LG 60' 4K UHD 60UQ8050 WiFi", "Novo"))
-        }
-
-        listaProdutosFiltrados.addAll(listaProdutos)
-        produtoAdapter.notifyDataSetChanged()
+    private fun buscarProdutos(termoBusca: String) {
+        val url = "https://api.mercadolibre.com/sites/MLB/search?q=$termoBusca"
+        val request = StringRequest(Request.Method.GET, url,
+            { response ->
+                listaProdutosFiltrados.clear()
+                val jsonResponse = JSONObject(response)
+                val results = jsonResponse.getJSONArray("results")
+                for (i in 0 until results.length()) {
+                    val item = results.getJSONObject(i)
+                    val imagemUrl = item.getString("thumbnail")
+                    val preco = "R$ " + item.getDouble("price")
+                    val titulo = item.getString("title")
+                    val condicao = if (item.getString("condition") == "new") "Novo" else "Usado"
+                    listaProdutosFiltrados.add(Produto(imagemUrl, preco, titulo, condicao))
+                }
+                produtoAdapter.notifyDataSetChanged()
+            },
+            {
+                Toast.makeText(this, "Erro ao buscar produtos", Toast.LENGTH_SHORT).show()
+            })
+        requestQueue.add(request)
     }
 }

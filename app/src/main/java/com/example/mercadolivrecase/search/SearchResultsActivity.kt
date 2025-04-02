@@ -1,16 +1,16 @@
-package com.example.mercadolivrecase
+package com.example.mercadolivrecase.search
 
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.privacysandbox.tools.core.model.Method
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.mercadolivrecase.databinding.ActivitySearchResultsBinding
 import org.json.JSONObject
 import com.android.volley.Request
-
+import com.example.mercadolivrecase.Produto
+import com.example.mercadolivrecase.ProdutoAdapter
 
 
 class SearchResultsActivity : AppCompatActivity() {

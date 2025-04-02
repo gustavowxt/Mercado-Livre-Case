@@ -1,4 +1,4 @@
-package com.example.mercadolivrecase
+package com.example.mercadolivrecase.home
 
 import android.os.Bundle
 import android.widget.Toast
@@ -8,13 +8,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.appcompat.widget.SearchView
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.mercadolivrecase.Anuncio
+import com.example.mercadolivrecase.AnuncioAdapter
+import com.example.mercadolivrecase.Produto
+import com.example.mercadolivrecase.ProdutoAdapter
+import com.example.mercadolivrecase.R
 import com.example.mercadolivrecase.databinding.ActivityHomeBinding
 import org.json.JSONObject
 
-class Home : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var anuncioAdapter: AnuncioAdapter
@@ -36,16 +40,16 @@ class Home : AppCompatActivity() {
 
     private fun setupRecyclerViews() {
         binding.recyclerViewAnuncios.apply {
-            layoutManager = LinearLayoutManager(this@Home, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
-            anuncioAdapter = AnuncioAdapter(this@Home, listaAnuncios)
+            anuncioAdapter = AnuncioAdapter(this@HomeActivity, listaAnuncios)
             adapter = anuncioAdapter
         }
 
         binding.recyclerViewProdutos.apply {
-            layoutManager = GridLayoutManager(this@Home, 2)
+            layoutManager = GridLayoutManager(this@HomeActivity, 2)
             setHasFixedSize(true)
-            produtoAdapter = ProdutoAdapter(this@Home, listaProdutosFiltrados)
+            produtoAdapter = ProdutoAdapter(this@HomeActivity, listaProdutosFiltrados)
             adapter = produtoAdapter
         }
     }
